@@ -6,6 +6,7 @@ import com.esmt.noor.feign.SecurityRestClient;
 import com.esmt.noor.model.AppUser;
 import com.esmt.noor.repositories.CompteRepository;
 import com.esmt.noor.repositories.VirementRepository;
+import com.esmt.noor.securities.SecurityConstants;
 import com.esmt.noor.services.BanqueService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,10 +37,10 @@ public class ControllerService {
     }
 
     @Transactional
-    public void virement(HttpServletResponse response, VirementResquest request) throws IOException {
+    public void virement(HttpServletRequest httpServletRequest,HttpServletResponse response, VirementResquest request) throws IOException {
         try {
-            AppUser userFrom = securityRestClient.getAppUserByEmail(banqueService.getToken(),getCurrentUserLogin());
-            AppUser userTo = securityRestClient.getAppUserByEmail(banqueService.getToken(),request.getEmail());
+            AppUser userFrom = securityRestClient.getAppUserByEmail(getToken(httpServletRequest),getCurrentUserLogin());
+            AppUser userTo = securityRestClient.getAppUserByEmail(getToken(httpServletRequest),request.getEmail());
             Virement virement= new Virement();
             banqueService.virement(userFrom.getCompteId(),userTo.getCompteId(),request.getMontant());
             virement.setCompteFrom(compteRepository.findById(userFrom.getCompteId()).get());
@@ -47,7 +48,7 @@ public class ControllerService {
             virement.setDateVirement(request.getDate());
             virement.setMontant(request.getMontant());
             virement.setTypeVirement(request.getType());
-            virement.setReponse(request.getQuestion());
+            virement.setReponse(request.getResponse());
             virement.setQuestion(request.getQuestion());
             virementRepository.save(virement);
             Map<String,String> tokens = new HashMap<>();
@@ -63,7 +64,7 @@ public class ControllerService {
     }
 
     @Transactional
-    public void virementFacture(HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public boolean virementFacture(HttpServletResponse response, HttpServletRequest request) throws IOException {
         try {
             double montant = Double.valueOf(request.getParameter("montant"));
             Long compteFromId = Long.valueOf(request.getParameter("compteFromId"));
@@ -78,21 +79,18 @@ public class ControllerService {
             virement.setReponse("");
             virement.setQuestion("");
             virementRepository.save(virement);
-            Map<String,String> tokens = new HashMap<>();
-            tokens.put("message","operation effectué avec succès");
-            response.setContentType("Application/json");
-            //on est pas obligé de send le prefix
-            new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+
+            return true;
 
         }catch (Exception e) {
-            response.setHeader("error_message",e.getMessage());
-            response.sendError(response.SC_FORBIDDEN);
+            return false;
         }
     }
 
     @Transactional
     public void getCompte(HttpServletResponse response, Long id) throws IOException {
         try {
+
             Compte compte =compteRepository.findById(id).get();
             Map<String,Object> tokens = new HashMap<>();
             tokens.put("response",compte);
@@ -107,8 +105,9 @@ public class ControllerService {
     }
 
     @Transactional
-    public void getSolde(HttpServletResponse response, Long id) throws IOException {
+    public void getSolde(HttpServletRequest httpServletRequest,HttpServletResponse response, Long id) throws IOException {
         try {
+            System.out.println("token   :  " +getToken(httpServletRequest));
             Compte compte =compteRepository.findById(id).get();
             Map<String,Object> tokens = new HashMap<>();
             tokens.put("response",compte.getSolde());
@@ -139,23 +138,16 @@ public class ControllerService {
     }
 
     @Transactional
-    public void create(HttpServletResponse response, CompteRequest request) throws IOException {
+    public Compte create(HttpServletResponse response, CompteRequest request) throws IOException {
+        Compte compte =new Compte();
         try {
-            AppUser user = securityRestClient.getAppUserByEmail(banqueService.getToken(),getCurrentUserLogin());
-            Compte compte =new Compte();
             compte.setSolde(request.getSolde());
-            compte.setAppUserId(user.getId());
+            compte.setAppUserId(request.getIdUser());
             compte.setDateCreation(new Date());
-            compteRepository.save(compte);
-            Map<String,Object> tokens = new HashMap<>();
-            tokens.put("response",compte);
-            response.setContentType("Application/json");
-            //on est pas obligé de send le prefix
-            new ObjectMapper().writeValue(response.getOutputStream(),tokens);
-
+            compte=compteRepository.save(compte);
+            return compte;
         }catch (Exception e) {
-            response.setHeader("error_message",e.getMessage());
-            response.sendError(response.SC_FORBIDDEN);
+            return null;
         }
     }
 
@@ -178,6 +170,11 @@ public class ControllerService {
             username = principal.toString();
         }
         return username;
+    }
+
+    public String getToken(HttpServletRequest httpServletRequest){
+        String jwtToken=httpServletRequest.getHeader(SecurityConstants.HEADER_STRING);
+        return jwtToken;
     }
 
 }

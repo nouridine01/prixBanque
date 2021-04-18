@@ -1,14 +1,16 @@
 package com.esmt.noor.web;
 
 
+import com.esmt.noor.entities.Compte;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 public class BanqueRestController {
-
 
     private ControllerService service;
 
@@ -16,14 +18,15 @@ public class BanqueRestController {
         this.service = service;
     }
 
-    @GetMapping(path = "/create")
-    public void create(@ModelAttribute CompteRequest request,HttpServletResponse response){
+    @PostMapping(path = "/create")
+    public Compte create(@RequestBody CompteRequest request, HttpServletResponse response){
 
         try {
-            service.create(response,request);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return service.create(response,request);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     @GetMapping(path = "/compte/{id}")
@@ -39,10 +42,10 @@ public class BanqueRestController {
 
 
     @GetMapping(path = "/solde/{id}")
-    public void getSolde(@PathVariable(name = "id") Long id,HttpServletResponse response){
+    public void getSolde(HttpServletRequest httpServletRequest,@PathVariable(name = "id") Long id,HttpServletResponse response){
 
         try {
-            service.getSolde(response,id);
+            service.getSolde(httpServletRequest,response,id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -59,21 +62,21 @@ public class BanqueRestController {
     }
 
     @PostMapping(path = "/virement")
-    public void virement(@ModelAttribute VirementResquest virementResquest, HttpServletResponse response){
+    public void virement(HttpServletRequest httpServletRequest,@ModelAttribute VirementResquest virementResquest, HttpServletResponse response){
         try {
-            service.virement(response,virementResquest);
+            service.virement(httpServletRequest,response,virementResquest);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
 
-    @PostMapping(path = "/factureVirement")
-    public void virementFacture(@ModelAttribute HttpServletRequest request, HttpServletResponse response){
+    @GetMapping(path = "/factureVirement")
+    public boolean virementFacture(HttpServletRequest request, HttpServletResponse response){
         try {
-            service.virementFacture(response,request);
+            return service.virementFacture(response,request);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return false;
         }
 
     }

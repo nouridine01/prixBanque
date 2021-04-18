@@ -8,6 +8,8 @@ import com.esmt.noor.securities.SecurityConstants;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 @Transactional
 public class BanqueServiceImpl implements  BanqueService {
@@ -16,12 +18,14 @@ public class BanqueServiceImpl implements  BanqueService {
     private VirementRepository virementRepository;
     private SecurityRestClient securityRestClient;
 
+
+
     public BanqueServiceImpl(CompteRepository compteRepository, VirementRepository virementRepository, SecurityRestClient securityRestClient) {
         this.compteRepository = compteRepository;
         this.virementRepository = virementRepository;
         this.securityRestClient = securityRestClient;
-    }
 
+    }
 
     @Override
     public void virement(Long fromId, Long toId, double montant) throws Exception {
@@ -75,9 +79,6 @@ public class BanqueServiceImpl implements  BanqueService {
         c.getVirementsTo();
         return c;
     }
-    @Override
-    public String getToken(){
-        String token = SecurityConstants.TOKEN_PREFIX+"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbm9tYW1hbmVAZXR1LnVxYWMuY2EiLCJleHAiOjE2MTg4MTI1ODgsImlzcyI6Ii9sb2dpbiIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJDTElFTlQifV19.KtIANCP4WtUp926FhWN_T5N_GTbsMwIUTSJ3iYGKvozDKijxhPLta9ZjCwrk4IdTHY0DHxoe0qyrVRDEsrGMhw";
-        return token;
-    }
+
+
 }

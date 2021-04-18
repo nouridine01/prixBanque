@@ -1,12 +1,9 @@
 package com.esmt.noor.web;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.sql.Date;
 
 public class VirementResquest {
     private String type;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
     private Date date;
     private double montant;
     private String email;

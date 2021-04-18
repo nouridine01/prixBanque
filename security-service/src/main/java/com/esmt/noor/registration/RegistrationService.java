@@ -3,9 +3,12 @@ package com.esmt.noor.registration;
 import com.esmt.noor.email.EmailSender;
 import com.esmt.noor.entities.AppRole;
 import com.esmt.noor.entities.AppUser;
+import com.esmt.noor.entities.Counter;
 import com.esmt.noor.feign.CompteRestClient;
+import com.esmt.noor.model.Compte;
 import com.esmt.noor.registration.token.ConfirmationToken;
 import com.esmt.noor.registration.token.ConfirmationTokenService;
+import com.esmt.noor.repositories.AppUserRepository;
 import com.esmt.noor.securities.SecurityConstants;
 import com.esmt.noor.services.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,6 +41,8 @@ public class RegistrationService {
     private EmailSender emailSender;
     @Autowired
     private CompteRestClient compteRestClient;
+    @Autowired
+    AppUserRepository appUserRepository;
 
     @Transactional
     public void register(HttpServletResponse response,RegistrationRequest request) throws IOException {
@@ -80,7 +85,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void confirmToken( HttpServletResponse response,String token) throws IOException {
+    public void confirmToken(HttpServletRequest httpServletRequest, HttpServletResponse response,String token) throws IOException {
         try {
             ConfirmationToken confirmationToken = confirmationTokenService
                     .getToken(token)
@@ -98,10 +103,22 @@ public class RegistrationService {
             }
 
             confirmationTokenService.setConfirmedAt(token);
-            accountService.enableAppUser(
-                    confirmationToken.getAppUser().getEmail());
 
+            AppUser user = confirmationToken.getAppUser();
+            double solde = 0;
+            if(Counter.getCounter()<10000) solde=1000;
+            CompteRequest compteRequest = new CompteRequest();
+            compteRequest.setIdUser(user.getId());
+            compteRequest.setSolde(solde);
+            Compte c = compteRestClient.create(compteRequest);
+            if(c != null){
+                user.setCompteId(c.getId());
+                appUserRepository.save(user);
+                accountService.enableAppUser(
+                        confirmationToken.getAppUser().getEmail());
+            }
 
+            //redirection vers la page de connexion
             Map<String,String> tokens = new HashMap<>();
             tokens.put("message","confirmed");
             response.setContentType("Application/json");
@@ -163,6 +180,11 @@ public class RegistrationService {
             response.setHeader("error_message","refresh token is required");
             response.sendError(response.SC_BAD_REQUEST);
         }
+    }
+
+    public String getToken(HttpServletRequest httpServletRequest){
+        String jwtToken=httpServletRequest.getHeader(SecurityConstants.HEADER_STRING);
+        return jwtToken;
     }
 
 

@@ -15,8 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
     private EmailSender emailSender;
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
+
 
     private final static String USER_NOT_FOUND_MSG =
             "user with email %s not found";
@@ -50,7 +51,7 @@ public class AccountServiceImpl implements AccountService {
             AppUser u = appUserRepository.findByEmail(appUser.getEmail()).get();
 
             if(appUser.getNom().equals(u.getNom()) && appUser.getPrenom().equals(u.getPrenom()) &&
-                    appUser.getPassword().equals(passwordEncoder.encode(u.getPassword())) && appUser.getEmail().equals(u.getEmail()) && !u.isEnabled()){
+                    passwordEncoder.encode(appUser.getPassword()).equals(u.getPassword()) && appUser.getEmail().equals(u.getEmail()) && (u.isEnabled()==false)){
                 ConfirmationToken confirmationToken = new ConfirmationToken(
                         token,
                         LocalDateTime.now(),
@@ -122,10 +123,7 @@ public class AccountServiceImpl implements AccountService {
         return appUserRepository.findById(id).get();
     }
 
-    @Override
-    public String getToken(){
-        String token = SecurityConstants.TOKEN_PREFIX+"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbm9tYW1hbmVAZXR1LnVxYWMuY2EiLCJleHAiOjE2MTg4MTI1ODgsImlzcyI6Ii9sb2dpbiIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJDTElFTlQifV19.KtIANCP4WtUp926FhWN_T5N_GTbsMwIUTSJ3iYGKvozDKijxhPLta9ZjCwrk4IdTHY0DHxoe0qyrVRDEsrGMhw";
-        return token;
-    }
+
+
 
 }

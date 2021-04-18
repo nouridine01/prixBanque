@@ -1,6 +1,4 @@
-package com.esmt.noor.web;
-
-import java.util.Date;
+package com.esmt.noor.registration;
 
 public class CompteRequest {
     private double solde;

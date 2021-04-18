@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //http.formLogin();
 
 
-        http.authorizeRequests().antMatchers("/h2-console/**","/*").permitAll();
+        http.authorizeRequests().antMatchers("/h2-console/**","/create/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(new JwtAuthorisationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

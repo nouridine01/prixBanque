@@ -72,4 +72,17 @@ public class Compte {
     public void setAppUser(AppUser appUser) {
         this.appUser = appUser;
     }
+
+    @Override
+    public String toString() {
+        return "Compte{" +
+                "id=" + id +
+                ", dateCreation=" + dateCreation +
+                ", solde=" + solde +
+                ", virementsFrom=" + virementsFrom +
+                ", virementsTo=" + virementsTo +
+                ", appUserId=" + appUserId +
+                ", appUser=" + appUser +
+                '}';
+    }
 }

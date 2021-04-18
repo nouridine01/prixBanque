@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 * feign permet de crée un client rest en utilisant des annotations de la mm maniere que spring data crée un client de DB
 * */
 
-//@FeignClient(name = "SECURITY-SERVICE")
+@FeignClient(name = "SECURITY-SERVICE")
 public interface SecurityRestClient {
 
     @GetMapping(path = "/getUserById/{id}")

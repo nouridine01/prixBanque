@@ -8,6 +8,6 @@ public interface BillingServices {
     public void createBill(Bill bill);
     public List<Bill> getCreatedBills(Long id);
     public List<Bill> getReceivedBills(Long id);
-    public void payBill(Long id) throws Exception;
-    public String getToken();
+    public boolean payBill(String token,Long compteFromId,Long compteToId,double montant) throws Exception;
+
 }

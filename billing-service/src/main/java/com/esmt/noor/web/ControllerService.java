@@ -6,13 +6,17 @@ import com.esmt.noor.feign.SecurityRestClient;
 import com.esmt.noor.model.AppUser;
 import com.esmt.noor.model.Compte;
 import com.esmt.noor.repositories.BillRepository;
+import com.esmt.noor.securities.SecurityConstants;
 import com.esmt.noor.services.BillingServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
@@ -69,18 +73,38 @@ public class ControllerService {
         }
     }
 
+
     @Transactional
-    public void create(HttpServletResponse response, BillRquest request) throws IOException {
+    public void delete(HttpServletResponse response, Long id) throws IOException {
         try {
-            AppUser user = securityRestClient.getAppUserByEmail(getCurrentUserLogin());
-            AppUser userTo = securityRestClient.getAppUserByEmail(request.getEmail());
+            Bill bill = billRepository.findById(id).get();
+            if(bill.getStatut()) throw new Exception("impossible de supprimer la facture car elle est déjà payé");
+            billRepository.delete(bill);
+            Map<String,Object> tokens = new HashMap<>();
+            tokens.put("response","facture supprimer avec succès");
+            response.setContentType("Application/json");
+            //on est pas obligé de send le prefix
+            new ObjectMapper().writeValue(response.getOutputStream(),tokens);
+
+        }catch (Exception e) {
+            response.setHeader("error_message",e.getMessage());
+            response.sendError(response.SC_FORBIDDEN);
+        }
+    }
+
+    @Transactional
+    public void create(HttpServletRequest httpServletRequest,HttpServletResponse response, BillRquest request) throws IOException {
+        try {
+            System.out.println("bill create 3");
+            AppUser user = securityRestClient.getAppUserByEmail(getToken(httpServletRequest),getCurrentUserLogin());
+            AppUser userTo = securityRestClient.getAppUserByEmail(getToken(httpServletRequest),request.getEmail());
+            System.out.println("bill create : "+userTo.getEmail());
             Bill bill = new Bill();
             bill.setDateBilling(request.getDate());
             bill.setClientFromId(user.getId());
             bill.setClientToId(userTo.getId());
             bill.setMontant(request.getMontant());
             bill=billRepository.save(bill);
-
             Map<String,Object> tokens = new HashMap<>();
             tokens.put("response",bill);
             response.setContentType("Application/json");
@@ -94,11 +118,19 @@ public class ControllerService {
     }
 
     @Transactional
-    public void payBill(HttpServletResponse response, Long id) throws IOException {
+    public void payBill(HttpServletRequest httpServletRequest,HttpServletResponse response, Long id) throws IOException {
         try {
-            billingServices.payBill(id);
+            Bill bill = billRepository.findById(id).get();
+            AppUser from = securityRestClient.getAppUserById(getToken(httpServletRequest),bill.getClientFromId());
+            AppUser to = securityRestClient.getAppUserById(getToken(httpServletRequest),bill.getClientToId());
+            boolean retour = billingServices.payBill(getToken(httpServletRequest),from.getCompteId(),to.getCompteId(),bill.getMontant());
             Map<String,Object> tokens = new HashMap<>();
-            tokens.put("response","facture payer avec succès");
+            if(retour){
+                bill.setStatut(true);
+                billRepository.save(bill);
+                tokens.put("response","facture payer avec succès");
+            }else tokens.put("response","erreur lors du payement de la facture");
+
             response.setContentType("Application/json");
             //on est pas obligé de send le prefix
             new ObjectMapper().writeValue(response.getOutputStream(),tokens);
@@ -120,6 +152,7 @@ public class ControllerService {
     }*/
 
 
+
     public String getCurrentUserLogin() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
@@ -129,6 +162,11 @@ public class ControllerService {
             username = principal.toString();
         }
         return username;
+    }
+
+    public String getToken(HttpServletRequest httpServletRequest){
+        String jwtToken=httpServletRequest.getHeader(SecurityConstants.HEADER_STRING);
+        return jwtToken;
     }
 
 }

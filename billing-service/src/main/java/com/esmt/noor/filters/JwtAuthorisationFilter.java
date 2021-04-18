@@ -2,6 +2,7 @@ package com.esmt.noor.filters;
 
 import com.esmt.noor.securities.SecurityConstants;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public class JwtAuthorisationFilter extends OncePerRequestFilter{
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
@@ -27,7 +29,7 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter{
 
                 try {
                     String token = jwtToken.substring(7);
-                    System.out.println(token);
+                    //System.out.println(token);
                     //il faut parser le jwt pour recuper les claims(subject et roles)
                     Claims claims = Jwts.parser()
                             .setSigningKey(SecurityConstants.SECRET)
@@ -52,7 +54,7 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter{
 
                     Collection<GrantedAuthority> authorities=new ArrayList<>();
                     roles.forEach(r->{
-                        System.out.println(r.get("authority"));
+                        //System.out.println(r.get("authority"));
                         authorities.add(new SimpleGrantedAuthority(r.get("authority")));
                     });
 
@@ -61,6 +63,7 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter{
                     //on charge le user dans le contexte de securité de spring pour savoir par example pour telle route telle role est requise etc
                     //donc on dit à spring security que le user est authentifié donc on ne passe plus par le filtre JWTAuthenticationFilter
                     SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+                    System.out.println("bill create 1");
 
                     filterChain.doFilter(httpServletRequest,httpServletResponse);
 
@@ -69,8 +72,9 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter{
                     httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
                 }
             }else{
-                httpServletResponse.setHeader("error_message","veuillez vous authentifier");
-                httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                //httpServletResponse.setHeader("error_message","veuillez vous authentifier");
+                //httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                filterChain.doFilter(httpServletRequest,httpServletResponse);
             }
 
 

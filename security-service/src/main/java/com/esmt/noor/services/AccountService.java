@@ -2,7 +2,9 @@ package com.esmt.noor.services;
 
 import com.esmt.noor.entities.AppRole;
 import com.esmt.noor.entities.AppUser;
+import com.esmt.noor.securities.SecurityConstants;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface AccountService {
@@ -11,5 +13,5 @@ public interface AccountService {
     AppUser loadUserByEmail(String email);
     String getCurrentUserLogin();
     AppUser getUserById(Long id);
-    public String getToken();
+
 }

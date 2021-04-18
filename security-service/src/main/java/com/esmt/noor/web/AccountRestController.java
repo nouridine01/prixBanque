@@ -29,14 +29,12 @@ public class AccountRestController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-
     }
 
     @GetMapping(path = "/confirm")
-    public void confirm(@RequestParam("token") String token,HttpServletResponse response) {
+    public void confirm(HttpServletRequest httpServletRequest,@RequestParam("token") String token,HttpServletResponse response) {
         try {
-            registrationService.confirmToken(response,token);
+            registrationService.confirmToken(httpServletRequest,response,token);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

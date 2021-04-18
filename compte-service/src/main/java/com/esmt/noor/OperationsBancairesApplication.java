@@ -1,9 +1,6 @@
 package com.esmt.noor;
 
 import com.esmt.noor.feign.SecurityRestClient;
-import com.esmt.noor.model.AppUser;
-import com.esmt.noor.securities.SecurityConstants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,11 +20,13 @@ public class OperationsBancairesApplication {
 	@Bean
 	CommandLineRunner start(SecurityRestClient securityRestClient){
 		return args -> {
-			String token = SecurityConstants.TOKEN_PREFIX+"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbm9tYW1hbmVAZXR1LnVxYWMuY2EiLCJleHAiOjE2MTg4MTI1ODgsImlzcyI6Ii9sb2dpbiIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJDTElFTlQifV19.KtIANCP4WtUp926FhWN_T5N_GTbsMwIUTSJ3iYGKvozDKijxhPLta9ZjCwrk4IdTHY0DHxoe0qyrVRDEsrGMhw";
+			//String token = SecurityConstants.TOKEN_PREFIX+"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtbm9tYW1hbmVAZXR1LnVxYWMuY2EiLCJleHAiOjE2MTg4MTI1ODgsImlzcyI6Ii9sb2dpbiIsInJvbGVzIjpbeyJhdXRob3JpdHkiOiJDTElFTlQifV19.KtIANCP4WtUp926FhWN_T5N_GTbsMwIUTSJ3iYGKvozDKijxhPLta9ZjCwrk4IdTHY0DHxoe0qyrVRDEsrGMhw";
 			//System.out.println(securityRestClient == null);
-			AppUser u = securityRestClient.getAppUserByEmail( token,"mnomamane@etu.uqac.ca");
-			System.out.println(u.getNom()+" "+u.getPrenom()+" : "+u.getEmail());
+			//AppUser u = securityRestClient.getAppUserByEmail( token,"mnomamane@etu.uqac.ca");
+			//System.out.println(u.getNom()+" "+u.getPrenom()+" : "+u.getEmail());
 		};
 	}
+
+
 
 }
