@@ -42,7 +42,7 @@ public class GatewayApplication {
 	}
 
     //conf dynamic en disant à gatewaye je ne connais pas les routes ni les microservices mais les noms des MS est dans l'url utilise le service d'enregistrement pour decouvrir les MS
-    //l'url est du la sorte uri-gatewaye/nom-service/path : http://localhost:8888/COSTUMER-SERVICE/costumers et http://localhost:8888/INVENTORY-SERVICE/products et http://localhost:8888/BILLING-SERVICE/bills/full/1
+    //l'url est du la sorte uri-gatewaye/nom-service/path : http://localhost:8888/SECURITY-SERVICE/login et http://localhost:8888/COMPTE-SERVICE/solde/id et http://localhost:8888/BILLING-SERVICE/bills/full/1
 	@Bean
     DiscoveryClientRouteDefinitionLocator discoveryClientRouteDefinitionLocator(ReactiveDiscoveryClient reactiveDiscoveryClient, DiscoveryLocatorProperties discoveryLocatorProperties){
 	    return new DiscoveryClientRouteDefinitionLocator(reactiveDiscoveryClient,discoveryLocatorProperties);
