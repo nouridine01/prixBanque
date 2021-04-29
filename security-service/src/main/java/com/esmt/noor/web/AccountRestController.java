@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+@CrossOrigin("*")
 @RestController
 public class AccountRestController {
 
@@ -52,7 +52,7 @@ public class AccountRestController {
     }*/
 
     @GetMapping(path = "/getUserById/{id}")
-    public AppUser getuserById(@PathVariable(name = "id") Long id){
+    public AppUser getuserById(@PathVariable(name = "id") Long id,HttpServletRequest httpServletRequest,HttpServletResponse response){
         return accountService.getUserById(id);
     }
 
@@ -72,7 +72,7 @@ public class AccountRestController {
     }
 
     @GetMapping(path = "/getUser")
-    public AppUser getUserByEmail(@RequestParam("email") String email){
+    public AppUser getUserByEmail(@RequestParam("email") String email,HttpServletRequest httpServletRequest,HttpServletResponse response){
         return accountService.loadUserByEmail(email);
 
     }

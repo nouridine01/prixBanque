@@ -67,6 +67,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("Application/json");
         //on est pas obligé de send le prefix
         response.addHeader(SecurityConstants.HEADER_STRING,SecurityConstants.TOKEN_PREFIX+jwtToken);
+        //response.addHeader("Access-Control-Allow-Origin", "*");
         new ObjectMapper().writeValue(response.getOutputStream(),tokens);
     }
 

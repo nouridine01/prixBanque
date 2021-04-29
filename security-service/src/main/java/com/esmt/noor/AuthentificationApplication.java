@@ -1,6 +1,7 @@
 package com.esmt.noor;
 
 import com.esmt.noor.email.EmailService;
+import com.esmt.noor.entities.AppUser;
 import com.esmt.noor.feign.CompteRestClient;
 import com.esmt.noor.registration.CompteRequest;
 import com.esmt.noor.services.AccountService;
@@ -12,17 +13,25 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true,securedEnabled = true)
 @EnableFeignClients
+@EnableWebMvc
 public class AuthentificationApplication {
 	@Autowired
 	EmailService emailService;
+	@Autowired
+	RepositoryRestConfiguration repositoryRestConfiguration;
 	public static void main(String[] args) {
 		SpringApplication.run(AuthentificationApplication.class, args);
 	}
@@ -34,6 +43,7 @@ public class AuthentificationApplication {
 	@Bean
 	CommandLineRunner start(AccountService accountService, CompteRestClient compteRestClient){
 		return args->{
+			repositoryRestConfiguration.exposeIdsFor(AppUser.class);
 
 			//accountService.signUpUser(new AppUser("nouridine","oumarou","nouridine27041998@gmail.com","passer",AppRole.ADMIN));
             CompteRequest compteRequest = new CompteRequest();
@@ -55,6 +65,16 @@ public class AuthentificationApplication {
 			accountService.addRoleToUser("user4","USER");
 			accountService.addRoleToUser("user4","BILLS_MANAGER");*/
 
+		};
+	}
+
+	//@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*");
+			}
 		};
 	}
 

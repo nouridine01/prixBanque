@@ -22,59 +22,73 @@ public class JwtAuthorisationFilter extends OncePerRequestFilter{
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        if(httpServletRequest.getServletPath().equals("/refreshToken")){
-            System.out.println("refresh filter");
-            filterChain.doFilter(httpServletRequest ,  httpServletResponse);
+        // pour authoriser tout les domaines à effectuer des requetes donc probleme de CORS reglé
+        //if(!httpServletRequest.getServletPath().equals("/login"))
+        httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+        //pour indiquer les entetes authoriser
+        httpServletResponse.addHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-RequestHeaders,authorization");
+        //pour indiquer les entetes authoriser à etre exposées dans la partie cliente
+        httpServletResponse.addHeader("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, authorization");
+        //pour indiquer les methodes acceptés
+        httpServletResponse.addHeader("Access-Control-Allow-Methods", "PATCH, POST, GET, PUT, DELETE, OPTIONS");
+
+        if(httpServletRequest.getMethod().equals("OPTIONS")){
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         }else{
-            String jwtToken=httpServletRequest.getHeader(SecurityConstants.HEADER_STRING);
-
-            if(jwtToken != null && jwtToken.startsWith(SecurityConstants.TOKEN_PREFIX)){
-
-                try {
-                    String token = jwtToken.substring(7);
-                    //System.out.println(token);
-                    //il faut parser le jwt pour recuper les claims(subject et roles)
-                    Claims claims = Jwts.parser()
-                            .setSigningKey(SecurityConstants.SECRET)
-                            .parseClaimsJws(token)
-                            .getBody();
-
-                    String username = claims.getSubject();
-                    //System.out.println(claims.toString());
-                    //recuperer les roles qui sont un tableau de clé valeur
-                /*
-                * {
-                      "sub": "noor@gmail.com",
-                      "exp": 1586886839,
-                      "roles": [
-                        {
-                          "authority": "ADMIN"
-                        }
-                      ]
-                    }
-               */
-                    ArrayList<Map<String, String>> roles=(ArrayList<Map<String, String>>) claims.get("roles");
-
-                    Collection<GrantedAuthority> authorities=new ArrayList<>();
-                    roles.forEach(r->{
-                        //System.out.println(r.get("authority"));
-                        authorities.add(new SimpleGrantedAuthority(r.get("authority")));
-                    });
-
-                    UsernamePasswordAuthenticationToken authenticatedUser= new UsernamePasswordAuthenticationToken(username, null,authorities);
-
-                    //on charge le user dans le contexte de securité de spring pour savoir par example pour telle route telle role est requise etc
-                    //donc on dit à spring security que le user est authentifié donc on ne passe plus par le filtre JWTAuthenticationFilter
-                    SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
-
-                    filterChain.doFilter(httpServletRequest,httpServletResponse);
-
-                }catch (Exception e) {
-                    httpServletResponse.setHeader("error_message",e.getMessage());
-                    httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
-                }
+            if(httpServletRequest.getServletPath().equals("/refreshToken")){
+                System.out.println("refresh filter");
+                filterChain.doFilter(httpServletRequest ,  httpServletResponse);
             }else{
-                filterChain.doFilter(httpServletRequest,httpServletResponse);
+                String jwtToken=httpServletRequest.getHeader(SecurityConstants.HEADER_STRING);
+
+                if(jwtToken != null && jwtToken.startsWith(SecurityConstants.TOKEN_PREFIX)){
+
+                    try {
+                        String token = jwtToken.substring(7);
+                        //System.out.println(token);
+                        //il faut parser le jwt pour recuper les claims(subject et roles)
+                        Claims claims = Jwts.parser()
+                                .setSigningKey(SecurityConstants.SECRET)
+                                .parseClaimsJws(token)
+                                .getBody();
+
+                        String username = claims.getSubject();
+                        //System.out.println(claims.toString());
+                        //recuperer les roles qui sont un tableau de clé valeur
+                    /*
+                    * {
+                          "sub": "noor@gmail.com",
+                          "exp": 1586886839,
+                          "roles": [
+                            {
+                              "authority": "ADMIN"
+                            }
+                          ]
+                        }
+                   */
+                        ArrayList<Map<String, String>> roles=(ArrayList<Map<String, String>>) claims.get("roles");
+
+                        Collection<GrantedAuthority> authorities=new ArrayList<>();
+                        roles.forEach(r->{
+                            //System.out.println(r.get("authority"));
+                            authorities.add(new SimpleGrantedAuthority(r.get("authority")));
+                        });
+
+                        UsernamePasswordAuthenticationToken authenticatedUser= new UsernamePasswordAuthenticationToken(username, null,authorities);
+
+                        //on charge le user dans le contexte de securité de spring pour savoir par example pour telle route telle role est requise etc
+                        //donc on dit à spring security que le user est authentifié donc on ne passe plus par le filtre JWTAuthenticationFilter
+                        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+
+                        filterChain.doFilter(httpServletRequest,httpServletResponse);
+
+                    }catch (Exception e) {
+                        httpServletResponse.setHeader("error_message",e.getMessage());
+                        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    }
+                }else{
+                    filterChain.doFilter(httpServletRequest,httpServletResponse);
+                }
             }
         }
 

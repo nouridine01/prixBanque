@@ -48,4 +48,6 @@ public class GatewayApplication {
 	    return new DiscoveryClientRouteDefinitionLocator(reactiveDiscoveryClient,discoveryLocatorProperties);
     }
 
+
+
 }

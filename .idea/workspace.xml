@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e5b8b7f-8527-4c79-a08e-d4e8e85627b1" name="Default Changelist" comment="" />
+    <list default="true" id="6e5b8b7f-8527-4c79-a08e-d4e8e85627b1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/web/BillRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/web/BillRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/web/BanqueRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/web/BanqueRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/web/AccountRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/web/AccountRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -9,35 +19,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/billing-service/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gateway/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="32" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/compte-service/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-55">
-              <caret line="64" column="21" selection-start-line="64" selection-start-column="21" selection-end-line="64" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -54,12 +39,15 @@
         <option value="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/entities/AppRole.java" />
         <option value="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/entities/AppUser.java" />
         <option value="$PROJECT_DIR$/compte-service/pom.xml" />
+        <option value="$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" />
+        <option value="$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" />
+        <option value="$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="29" />
-    <option name="y" value="23" />
+    <option name="x" value="97" />
+    <option name="y" value="8" />
     <option name="width" value="1251" />
     <option name="height" value="777" />
   </component>
@@ -68,7 +56,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -80,12 +68,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1617301770409" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/security-service" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1619536161009" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/compte-service" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -114,9 +102,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25718608" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2647504" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -222,20 +209,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/entities/ProductItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="25" column="1" lean-forward="true" selection-start-line="25" selection-start-column="1" selection-end-line="25" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/model/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/entities/ProductItem.java" />
+    <entry file="file://$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/model/User.java" />
     <entry file="file://$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/repositories/AppUserRepository.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -260,10 +235,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/web/BanqueRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/security-service/src/main/java/com/esmt/noor/web/AccountRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/billing-service/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compte-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
@@ -274,10 +277,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/web/BillRestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/compte-service/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-55">
+        <state relative-caret-position="1088">
           <caret line="64" column="21" selection-start-line="64" selection-start-column="21" selection-end-line="64" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/billing-service/src/main/java/com/esmt/noor/filters/JwtAuthorisationFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
